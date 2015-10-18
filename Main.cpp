@@ -2,6 +2,10 @@
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include "Reflector.hpp"
+#include "Rotor.hpp"
+#include "Plugboard.hpp"
 
 using namespace std;
 
