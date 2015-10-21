@@ -11,7 +11,7 @@ class Rotor {
     void rotate(void);
     void configureRotor(std::ifstream&);
   private:
-    std::vector<int> configArray{std::vector<int>(26,0)};
+    std::vector<int> configArray{std::vector<int>(26)};
     int numberOfRotations;
 
 };

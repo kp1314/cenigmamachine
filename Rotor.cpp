@@ -2,11 +2,12 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <vector>
 
 Rotor::Rotor() {
 
   numberOfRotations = 0;
-  
+  //std::vector<int> configArray{std::vector<int>(26,0)};  
 }
 
 void Rotor::configureRotor(std::ifstream& file) { 
@@ -14,8 +15,8 @@ void Rotor::configureRotor(std::ifstream& file) {
   if (file) {
  
     int i;
-    int j = 1;
-
+    int j = 0;
+        
     while(file >> i) {
       configArray.at(j) = i;
       j++;

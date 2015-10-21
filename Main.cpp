@@ -22,7 +22,8 @@ int main(int argc, char **argv)
   } else {
 
     int rotorCount = 0;
-    vector<shared_ptr<Rotor>> rotorVec(argc-2);
+    shared_ptr<Rotor> r1(new Rotor());
+    vector<shared_ptr<Rotor>> rotorVec(argc-2,  r1);
     shared_ptr<Plugboard> pPlugboard(new Plugboard());
  
     //configure the rotors
