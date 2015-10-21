@@ -1,43 +1,50 @@
 #include "Rotor.hpp"
+#include <stdexcept>
 #include <iostream>
 #include <string>
 
-Rotor::Rotor(string file) {
+Rotor::Rotor() {
 
-  rotConfig.open(file);
   numberOfRotations = 0;
+  
+}
 
-  if (rotConfig.is_open) {
+void Rotor::configureRotor(std::ifstream& file) { 
 
-    std::shared_ptr<int> configArray = new int[26]();
+  if (file) {
+ 
     int i;
-    int j = 0;
+    int j = 1;
 
-    while(rotConfig >> i) {
-      configArray[j] = i;
+    while(file >> i) {
+      configArray.at(j) = i;
       j++;
     }  
 
- }
-
+  } else {
+    
+    throw std::invalid_argument("file didnt open correctly");
+ 
+  }
 }
-
 
 //checks in rotConfig which char contactInput is mapped to taking into
 //account the number of rotations taken by the rotor
-Rotor::char encode(char contactInput) {
-  
-  if (contactInput => 65 && contactInput <= 90) {
+char Rotor::encode(char contactInput) {
+  int asciiValue = contactInput; 
+  if (asciiValue >= 65 && asciiValue <= 90) {
 
-    int transformation = configArray[((contactInput-65)+numberOfRotations)%26];
+    int transformation = configArray[((asciiValue-65)+numberOfRotations)%26];
     return (char)(transformation+65);
    
   }
 
+  exit(107);
+
 }
 
 //rotates the rotor by altering the configArray
-Rotor::void rotate(void) {
+void Rotor::rotate(void) {
 
   numberOfRotations = (numberOfRotations+1)%26; 
 

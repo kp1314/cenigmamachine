@@ -1,6 +1,8 @@
-#include <string> 
-
 class Reflector {
-  Reflector();
-  char encode(char);
-}
+
+  public:
+    
+    Reflector();
+    char reflect(char);
+
+};

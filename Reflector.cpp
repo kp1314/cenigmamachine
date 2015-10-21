@@ -1,6 +1,10 @@
 #include "Reflector.hpp"
 
-Reflector::char reflect(char inputContact) {
+Reflector::Reflector() {
+
+}
+
+char Reflector::reflect(char inputContact) {
 
   return (inputContact+13)%26;
 
