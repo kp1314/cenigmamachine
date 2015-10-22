@@ -14,22 +14,23 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-  if (argc <= 2) {
+  if (argc < 2) {
   
-    cout << "Please give the rotor and plugboard configuration files as arguments" << endl;
+    cout << "Please give the plugboard configuration file as an argument" << endl;
     return -1;
 
   } else {
 
     int rotorCount = 0;
-    shared_ptr<Rotor> r1(new Rotor());
-    vector<shared_ptr<Rotor>> rotorVec(argc-2,  r1);
+    vector<shared_ptr<Rotor>> rotorVec;
     shared_ptr<Plugboard> pPlugboard(new Plugboard());
- 
+    shared_ptr<Reflector> pReflector(new Reflector());   
+
     //configure the rotors
     while (rotorCount < argc-2) {
       std::ifstream rotConfig;
       rotConfig.open(argv[rotorCount+1], std::ifstream::in);
+      rotorVec.push_back(shared_ptr<Rotor>(new Rotor()));
       rotorVec.at(rotorCount)->configureRotor(rotConfig);
       rotorCount++;
       rotConfig.close();
@@ -39,14 +40,58 @@ int main(int argc, char **argv)
     std::ifstream plugConfig;
     plugConfig.open(argv[argc-1]);
     pPlugboard->configurePlugboard(plugConfig);
+ 
+    string keysPressed;
+    cin >> keysPressed;
 
-    cout << "Press any uppercase alphabet key";
-
-    char keyPressed;
-    cin >> keyPressed;
-    cout << "you pressed " << keyPressed << endl;
+    int i = 0;
+    
+    for (char& c : keysPressed) {
+        
+      //put though the plugboard
+      pPlugboard->swapIO(c);
+      
+      //put through the rotors
+      int rotationsOfFirstRotor = 0;
+      while (i <= 2*(argc-2)) {  
      
+        if (i < (argc-2)) { 
+          rotorVec.at(i)->encode(c);
+        } else if (i == (argc-2)) {
+          pReflector->reflect(c);
+          for (auto r : rotorVec) {
+            r->setOppositeConfiguration(true);
+          } 
+        } else if (i > (argc-2)) {
+          rotorVec.at((2*(argc-2))%i)->encode(c);
+        }
+          i++;
+      } 
+      
+      //rotate rotors that need rotating;
+      for (i = 0; i < (argc-2); i++) {
 
+        if (i == 0) {
+          rotorVec.at(i)->rotate();
+          rotationsOfFirstRotor++;   
+        }
+
+        if (i !=0 && (rotationsOfFirstRotor%(26^i) == 0)) {
+          rotorVec.at(i)->rotate();
+        }
+      } 
+     
+      //going through rotors forwads now
+      for (auto r : rotorVec) {
+        r->setOppositeConfiguration(false);
+      }
+      
+      //reset rotor counter, pass char through plugboardOB 
+      i = 0;
+      pPlugboard->swapIO(c);
+    
+    } 
+    cout << keysPressed << endl;
   }
 
   return 0;

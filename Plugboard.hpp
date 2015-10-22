@@ -9,7 +9,7 @@ class Plugboard {
   public:
     Plugboard();
     void configurePlugboard(std::ifstream&);
-    char swapIO(char);
+    void swapIO(char&);
   private:
     std::vector<int> configArray{std::vector<int>(26,0)};
 };

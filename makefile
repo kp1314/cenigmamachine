@@ -3,7 +3,6 @@ OBJS = Main.o Rotor.o Reflector.o Plugboard.o
 CC = g++
 DEBUG = -g
 CFLAGS = -Wall -Werror -pedantic -std=c++11 $(DEBUG)
-LFLAGS = -Wall -Werror -pedantic -std=c++11 $(DEBUG)
 
 enigma: $(OBJS)
 	$(CC) $(CFLAGS) $^ -o enigma
@@ -17,7 +16,7 @@ Reflector.o: Reflector.cpp
 Rotor.o: Rotor.cpp
 	$(CC) $(CFLAGS) -c $^
 
-Plugboard: Plugboard.cpp
+Plugboard.o: Plugboard.cpp
 	$(CC) $(CFLAGS) -c $^
 
 clean:

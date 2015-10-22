@@ -1,11 +1,12 @@
 #include "Reflector.hpp"
+#include <string>
 
 Reflector::Reflector() {
 
 }
 
-char Reflector::reflect(char inputContact) {
-
-  return (inputContact+13)%26;
-
+void Reflector::reflect(char& keyPressed) {
+  
+    int transformation = (((keyPressed-65)+13)%26) + 65;
+    keyPressed = transformation;
 }

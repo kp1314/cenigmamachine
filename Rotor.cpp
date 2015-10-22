@@ -1,20 +1,20 @@
-#include "Rotor.hpp"
 #include <stdexcept>
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Rotor.hpp"
 
 Rotor::Rotor() {
-
+  
+  isOppositeConfiguration=false;
   numberOfRotations = 0;
-  //std::vector<int> configArray{std::vector<int>(26,0)};  
 }
 
 void Rotor::configureRotor(std::ifstream& file) { 
 
   if (file) {
  
-    int i;
+    int i = 0;
     int j = 0;
         
     while(file >> i) {
@@ -31,22 +31,34 @@ void Rotor::configureRotor(std::ifstream& file) {
 
 //checks in rotConfig which char contactInput is mapped to taking into
 //account the number of rotations taken by the rotor
-char Rotor::encode(char contactInput) {
-  int asciiValue = contactInput; 
-  if (asciiValue >= 65 && asciiValue <= 90) {
+void Rotor::encode(char& keyPressed) {
+  
+    if (keyPressed >= 65 && keyPressed <= 90) {
 
-    int transformation = configArray[((asciiValue-65)+numberOfRotations)%26];
-    return (char)(transformation+65);
-   
+      if (!isOppositeConfiguration) {
+
+        keyPressed = configArray[((keyPressed-65)+numberOfRotations)%26]-numberOfRotations+65;
+        
+      } else {      
+
+        for (int i = 0; i < 26; i++) {
+          if (configArray[i] == keyPressed-65) {
+            keyPressed = i+numberOfRotations+65;
+            break;
+          }
+        }
+     }
+
+    } else {
+      std::cout << "Character was not a valid character" << std::endl;
+      exit(107);
+    }
   }
 
-  exit(107);
-
+void Rotor::setOppositeConfiguration(bool b) {
+  isOppositeConfiguration = b; 
 }
 
-//rotates the rotor by altering the configArray
 void Rotor::rotate(void) {
-
-  numberOfRotations = (numberOfRotations+1)%26; 
-
+  numberOfRotations = (numberOfRotations+1)%26;
 }

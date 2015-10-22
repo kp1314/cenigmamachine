@@ -11,14 +11,15 @@ void Plugboard::configurePlugboard(std::ifstream& file) {
   
   if(file) {
    
-    int i;
+    int i = 0;
     
     while(file >> i) {
       
-      int j;
+      int j = 0;
       file >> j;
       
       configArray[i] = j;
+      configArray[j] = i;
  
     }    
 
@@ -26,26 +27,22 @@ void Plugboard::configurePlugboard(std::ifstream& file) {
  
 }
 
-char Plugboard::swapIO(char keyPressed) {
+void Plugboard::swapIO(char& keyPressed) {
 
-  int switchedKey;
-
-  if(keyPressed >= 65 && keyPressed <= 90) {
-   
-    switchedKey = configArray[keyPressed-65];
-
-  } else {
- 
-    throw std::invalid_argument("input error"); 
-
-  } 
-
-  if(switchedKey == 0) {
-
-    return keyPressed;
+  int switchedKey = 0;
   
-  } 
+    if(keyPressed >= 65 && keyPressed <= 90) {
+   
+      switchedKey = configArray[keyPressed-65];
 
-  return (char)(switchedKey+65);
+      if(switchedKey != 0) {
+       keyPressed = switchedKey + 65;
+  
+      }
+    } else {
+ 
+      throw std::invalid_argument("input error"); 
+
+    } 
 
 }

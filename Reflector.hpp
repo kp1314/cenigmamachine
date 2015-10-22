@@ -1,8 +1,10 @@
+#include <string>
+
 class Reflector {
 
   public:
     
     Reflector();
-    char reflect(char);
+    void reflect(char&);
 
 };
