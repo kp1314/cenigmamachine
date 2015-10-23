@@ -44,15 +44,15 @@ int main(int argc, char **argv)
     pPlugboard->configurePlugboard(plugConfig);
  
     int i = 0;
-    int rotationsOfFirstRotor = 0; 
+    int rotationsOfFirstRotor = 0;
     string keysPressed; 
 
     while (!cin.eof()) {
 
-    cin >> std::ws >> keysPressed;
+    cin >> ws >> keysPressed;     
 
     for (char& c : keysPressed) {
-        
+      
       //put though the plugboard
       pPlugboard->swapIO(c);
       
@@ -94,8 +94,9 @@ int main(int argc, char **argv)
       pPlugboard->swapIO(c);
     
     }
+   
     
-    cout << keysPressed << endl;
+    cout << keysPressed;
   } 
 }
 
