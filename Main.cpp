@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <math.h>
 #include "Reflector.hpp"
 #include "Rotor.hpp"
 #include "Plugboard.hpp"
@@ -46,7 +47,8 @@ int main(int argc, char **argv)
 
     int i = 0;
     int rotationsOfFirstRotor = 0;
-
+    
+    while (cin != EOF) {
     for (char& c : keysPressed) {
         
       //put though the plugboard
@@ -71,10 +73,13 @@ int main(int argc, char **argv)
       //rotate rotors that need rotating;
       for (int k = 0; k < (argc-2); k++) {
 
-        if (k !=0 && (rotationsOfFirstRotor%(26^k) == 0)) {
+        if ((rotationsOfFirstRotor%(int)(pow(26,k)) == 0)) {
           rotorVec.at(k)->rotate();
         }
+        
+        if (k == 0) {
           rotationsOfFirstRotor++;   
+        }
       } 
      
       //going through rotors forwads now
@@ -86,9 +91,11 @@ int main(int argc, char **argv)
       i = 0;
       pPlugboard->swapIO(c);
     
-    } 
+    }
+  } 
     cout << keysPressed << endl;
   }
+
 
   return 0;
 }

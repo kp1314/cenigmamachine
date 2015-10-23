@@ -37,23 +37,41 @@ void Rotor::encode(char& keyPressed) {
 
       if (!isOppositeConfiguration) {
 
-        keyPressed = configArray[((keyPressed-65)+numberOfRotations)%26]-numberOfRotations+65;
+        int transformation = (configArray[((keyPressed-65)+numberOfRotations)%26]
+                              - numberOfRotations)%26;
+        //in case of negative mod
+        if (transformation < 0) {
+          transformation += 26;
+        }
         
-      } else {      
+        //transform key pressed
+        keyPressed = ((transformation)%26)+65;
+      
+      } else {      //going through the rotors
 
         for (int i = 0; i < 26; i++) {
-          if (configArray[i] == ((keyPressed-65)-numberOfRotations)%26) {
-            keyPressed = ((i+numberOfRotations)%26)+65;
+       
+        int transformation = ((keyPressed-65)+numberOfRotations)%26;
+           
+          if (configArray[i] == transformation) {
+            
+            //incase of negative mod
+            if (i < numberOfRotations) {
+              i += 26;
+            }
+            
+
+            keyPressed = ((i-numberOfRotations)%26)+65;
             break;
           }
         }
-     }
+      }
 
     } else {
       std::cout << "Character was not a valid character" << std::endl;
       exit(107);
     }
-  }
+}
 
 void Rotor::setOppositeConfiguration(bool b) {
   isOppositeConfiguration = b; 
