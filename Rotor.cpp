@@ -68,8 +68,9 @@ void Rotor::encode(char& keyPressed) {
       }
 
     } else {
-      std::cout << "Character was not a valid character" << std::endl;
-      exit(107);
+      
+      throw std::invalid_argument("input error to Rotor");    
+
     }
 }
 

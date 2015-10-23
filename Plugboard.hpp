@@ -11,5 +11,5 @@ class Plugboard {
     void configurePlugboard(std::ifstream&);
     void swapIO(char&);
   private:
-    std::vector<int> configArray{std::vector<int>(26,0)};
+    std::vector<int> configArray{std::vector<int>(26,-1)};
 };

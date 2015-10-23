@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include <math.h>
@@ -38,17 +39,18 @@ int main(int argc, char **argv)
     }
 
     //configure the plugboard
-    std::ifstream plugConfig;
+    ifstream plugConfig;
     plugConfig.open(argv[argc-1]);
     pPlugboard->configurePlugboard(plugConfig);
  
-    string keysPressed;
-    cin >> keysPressed;
-
     int i = 0;
-    int rotationsOfFirstRotor = 0;
-    
-    while (cin != EOF) {
+    int rotationsOfFirstRotor = 0; 
+    string keysPressed; 
+
+    while (!cin.eof()) {
+
+    cin >> std::ws >> keysPressed;
+
     for (char& c : keysPressed) {
         
       //put though the plugboard
@@ -87,14 +89,15 @@ int main(int argc, char **argv)
         r->setOppositeConfiguration(false);
       }
       
-      //reset rotor counter, pass char through plugboardOB 
+      //reset rotor counter, pass char through plugboard 
       i = 0;
       pPlugboard->swapIO(c);
     
     }
-  } 
+    
     cout << keysPressed << endl;
-  }
+  } 
+}
 
 
   return 0;
