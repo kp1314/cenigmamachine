@@ -1,4 +1,4 @@
-#include <stdexcept>
+#include <stdexcept> 
 #include <iostream>
 #include <string>
 #include <vector>
@@ -42,8 +42,8 @@ void Rotor::encode(char& keyPressed) {
       } else {      
 
         for (int i = 0; i < 26; i++) {
-          if (configArray[i] == keyPressed-65) {
-            keyPressed = i+numberOfRotations+65;
+          if (configArray[i] == ((keyPressed-65)-numberOfRotations)%26) {
+            keyPressed = ((i+numberOfRotations)%26)+65;
             break;
           }
         }

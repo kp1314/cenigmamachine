@@ -45,14 +45,14 @@ int main(int argc, char **argv)
     cin >> keysPressed;
 
     int i = 0;
-    
+    int rotationsOfFirstRotor = 0;
+
     for (char& c : keysPressed) {
         
       //put though the plugboard
       pPlugboard->swapIO(c);
       
       //put through the rotors
-      int rotationsOfFirstRotor = 0;
       while (i <= 2*(argc-2)) {  
      
         if (i < (argc-2)) { 
@@ -69,16 +69,12 @@ int main(int argc, char **argv)
       } 
       
       //rotate rotors that need rotating;
-      for (i = 0; i < (argc-2); i++) {
+      for (int k = 0; k < (argc-2); k++) {
 
-        if (i == 0) {
-          rotorVec.at(i)->rotate();
+        if (k !=0 && (rotationsOfFirstRotor%(26^k) == 0)) {
+          rotorVec.at(k)->rotate();
+        }
           rotationsOfFirstRotor++;   
-        }
-
-        if (i !=0 && (rotationsOfFirstRotor%(26^i) == 0)) {
-          rotorVec.at(i)->rotate();
-        }
       } 
      
       //going through rotors forwads now
