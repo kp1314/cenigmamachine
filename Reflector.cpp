@@ -1,12 +1,10 @@
+#include "Encoder.hpp"
 #include "Reflector.hpp"
-#include <string>
 
-Reflector::Reflector() {
-
-}
-
-void Reflector::reflect(char& keyPressed) {
+void Reflector::encode(char& keyPressed) {
   
-    int transformation = (((keyPressed-65)+13)%26) + 65;
+    int transformation = (((keyPressed-A_ASCII)+(ALPHA_LENGTH/2))%
+         ALPHA_LENGTH) + A_ASCII;
     keyPressed = transformation;
 }
+

@@ -1,23 +1,20 @@
-#include "Plugboard.hpp"
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include "Encoder.hpp"
+#include "Plugboard.hpp"
 
-Plugboard::Plugboard() {
+Plugboard::Plugboard(std::ifstream& configFile) {
   
-}
-
-void Plugboard::configurePlugboard(std::ifstream& file) {
-  
-  if(file) {
+  if(configFile) {
    
     int i = 0;
     
-    while(file >> i) {
+    while(configFile >> i) {
       
       int j = 0;
-      file >> j;
-      
+      configFile >> j;
+
       configArray[i] = j;
       configArray[j] = i;
  
@@ -25,27 +22,27 @@ void Plugboard::configurePlugboard(std::ifstream& file) {
 
   } else {
  
-  throw std::invalid_argument("can't configure Plugboard");
- }
+    throw std::invalid_argument("Plugboard configuration error");
+  }
 }
 
-void Plugboard::swapIO(char& keyPressed) {
+void Plugboard::encode(char& keyPressed) {
 
   int switchedKey = 0;
   
-    if(keyPressed >= 65 && keyPressed <= 90) {
+  if(keyPressed >= A_ASCII && keyPressed <= Z_ASCII) {
    
-      switchedKey = configArray[keyPressed-65];
+    switchedKey = configArray[keyPressed-A_ASCII];
 
-      if(switchedKey >= 0) {
-        keyPressed = switchedKey + 65;
-        
-      }
+    //all entries of vector are initialized to -1
+    //if negative it means character isn't affected 
+    //by the plugboard
+    if(switchedKey >= 0) {
+      keyPressed = switchedKey + A_ASCII;
+    }
 
-    } else {
+  } else {
  
-      throw std::invalid_argument("input error"); 
-
-    } 
-
+    throw std::invalid_argument("Plugboard input error"); 
+  } 
 }

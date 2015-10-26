@@ -2,29 +2,29 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Encoder.hpp"
 #include "Rotor.hpp"
 
-Rotor::Rotor() {
+Rotor::Rotor(std::ifstream& configFile) {
   
-  isOppositeConfiguration=false;
+  isOppositeConfiguration = false;
   numberOfRotations = 0;
-}
 
-void Rotor::configureRotor(std::ifstream& file) { 
-
-  if (file) {
+  if (configFile) {
  
     int i = 0;
     int j = 0;
         
-    while(file >> i) {
-      configArray.at(j) = i;
+    while(configFile >> i) {
+      
+      configArray[j] = i;
       j++;
+
     }  
 
   } else {
     
-    throw std::invalid_argument("file didnt open correctly");
+    throw std::invalid_argument("Rotor configuration error");
  
   }
 }
@@ -33,51 +33,56 @@ void Rotor::configureRotor(std::ifstream& file) {
 //account the number of rotations taken by the rotor
 void Rotor::encode(char& keyPressed) {
   
-    if (keyPressed >= 65 && keyPressed <= 90) {
+    if (keyPressed >= A_ASCII && keyPressed <= Z_ASCII) {
 
-      if (!isOppositeConfiguration) {
+      if (!isOppositeConfiguration) { // go through rotors forwards
 
-        int transformation = (configArray[((keyPressed-65)+numberOfRotations)%26]
-                              - numberOfRotations)%26;
+        int transformation = (configArray[((keyPressed-A_ASCII)+
+            numberOfRotations)%ALPHA_LENGTH] 
+                - numberOfRotations)%ALPHA_LENGTH;
+        
         //in case of negative mod
         if (transformation < 0) {
-          transformation += 26;
+          transformation += ALPHA_LENGTH;
         }
         
         //transform key pressed
-        keyPressed = ((transformation)%26)+65;
+        keyPressed = ((transformation)%ALPHA_LENGTH)+A_ASCII;
       
-      } else {      //going through the rotors
+      } else {      //going through the rotors backwards
 
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < ALPHA_LENGTH; i++) {
        
-        int transformation = ((keyPressed-65)+numberOfRotations)%26;
+          int transformation = ((keyPressed-A_ASCII)
+              +numberOfRotations)%ALPHA_LENGTH;
            
           if (configArray[i] == transformation) {
             
             //incase of negative mod
             if (i < numberOfRotations) {
-              i += 26;
+              i += ALPHA_LENGTH;
             }
             
-
-            keyPressed = ((i-numberOfRotations)%26)+65;
+            keyPressed = ((i-numberOfRotations)%ALPHA_LENGTH)
+                +A_ASCII;
             break;
           }
         }
       }
 
     } else {
-      
-      throw std::invalid_argument("input error to Rotor");    
+ 
+      throw std::invalid_argument("Rotor input error");    
 
     }
 }
 
+//tell rotor we want to read it backwards
 void Rotor::setOppositeConfiguration(bool b) {
   isOppositeConfiguration = b; 
 }
 
+//rotate the rotor
 void Rotor::rotate(void) {
-  numberOfRotations = (numberOfRotations+1)%26;
+  numberOfRotations = (numberOfRotations+1)%ALPHA_LENGTH;
 }

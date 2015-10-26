@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <math.h>
+#include "Encoder.hpp"
 #include "Reflector.hpp"
 #include "Rotor.hpp"
 #include "Plugboard.hpp"
@@ -18,30 +19,32 @@ int main(int argc, char **argv)
 {
   if (argc < 2) {
   
-    cout << "Please give the plugboard configuration file as an argument" << endl;
+    cout << "Please give the plugboard configuration file as an argument" 
+         << endl;
     return -1;
 
   } else {
 
     int rotorCount = 0;
     vector<shared_ptr<Rotor>> rotorVec;
-    shared_ptr<Plugboard> pPlugboard(new Plugboard());
     shared_ptr<Reflector> pReflector(new Reflector());   
 
     //configure the rotors
     while (rotorCount < argc-2) {
       std::ifstream rotConfig;
       rotConfig.open(argv[rotorCount+1], std::ifstream::in);
-      rotorVec.push_back(shared_ptr<Rotor>(new Rotor()));
-      rotorVec.at(rotorCount)->configureRotor(rotConfig);
+      rotorVec.push_back(shared_ptr<Rotor>(new Rotor(rotConfig)));
       rotorCount++;
       rotConfig.close();
     }
+   
+    //after this point rotorCount is now (argc-2)
 
     //configure the plugboard
     ifstream plugConfig;
     plugConfig.open(argv[argc-1]);
-    pPlugboard->configurePlugboard(plugConfig);
+    shared_ptr<Plugboard> pPlugboard(new Plugboard(plugConfig));
+    plugConfig.close();
  
     int i = 0;
     int rotationsOfFirstRotor = 0;
@@ -52,34 +55,35 @@ int main(int argc, char **argv)
     for (char& c : keysPressed) {
       
       //put though the plugboard
-      pPlugboard->swapIO(c);
+      pPlugboard->encode(c);
       
       //put through the rotors
-      while (i <= 2*(argc-2)) {  
+      while (i <= 2*(rotorCount)) {  
      
-        if (i < (argc-2)) { 
+        if (i < (rotorCount)) { 
           rotorVec.at(i)->encode(c);
-        } else if (i == (argc-2)) {
-          pReflector->reflect(c);
+        } else if (i == (rotorCount)) {
+          pReflector->encode(c);
           for (auto r : rotorVec) {
             r->setOppositeConfiguration(true);
           } 
-        } else if (i > (argc-2)) {
-          rotorVec.at((2*(argc-2))%i)->encode(c);
+        } else if (i > (rotorCount)) {
+          rotorVec.at((2*(rotorCount))%i)->encode(c);
         }
           i++;
       } 
       
       //rotate rotors that need rotating;
-      for (int k = 0; k < (argc-2); k++) {
+      
+      rotationsOfFirstRotor++;   
+      for (int k = 0; k < (rotorCount); k++) {
 
-        if ((rotationsOfFirstRotor%(int)(pow(26,k)) == 0)) {
+        if ((rotationsOfFirstRotor%
+            (int)(pow(ALPHA_LENGTH,k)) == 0)) {
+          
           rotorVec.at(k)->rotate();
-        }
-        
-        if (k == 0) {
-          rotationsOfFirstRotor++;   
-        }
+
+        }        
       } 
      
       //going through rotors forwads now
@@ -89,10 +93,9 @@ int main(int argc, char **argv)
       
       //reset rotor counter, pass char through plugboard 
       i = 0;
-      pPlugboard->swapIO(c);
+      pPlugboard->encode(c);
     
     }
-   
     
     cout << keysPressed;
   } 

@@ -1,10 +1,10 @@
-#include <string>
+#ifndef REFLECTOR
+#define REFLECTOR
 
 class Reflector {
 
   public:
-    
-    Reflector();
-    void reflect(char&);
+    void encode(char&);
 
 };
+#endif

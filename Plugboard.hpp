@@ -1,15 +1,18 @@
-#include <string>
+#ifndef PLUGBOARD
+#define PLUGBOARD
+
 #include <iostream>
 #include <fstream>
-#include <vector>
 
 class Plugboard {
 
   //Plugboard takes in plug configuration
   public:
-    Plugboard();
-    void configurePlugboard(std::ifstream&);
-    void swapIO(char&);
+    Plugboard(std::ifstream&);
+    void encode(char&);
   private:
-    std::vector<int> configArray{std::vector<int>(26,-1)};
+    std::vector<int> configArray{std::vector<int>(ALPHA_LENGTH,
+        VECTOR_INITIALIZE)};
 };
+
+#endif

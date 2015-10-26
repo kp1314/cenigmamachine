@@ -1,20 +1,19 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <string>
+#include "Encoder.hpp"
 
 class Rotor { 
 
   //Rotor takes in rotor configuration 
   public: 
-    Rotor();
+    Rotor(std::ifstream&);
     void rotate(void);
-    void encode(char&);  
-    void configureRotor(std::ifstream&);
     void setOppositeConfiguration(bool);
+    void encode(char&);
   private:
-    std::vector<int> configArray{std::vector<int>(26,0)};
     int numberOfRotations;
     bool isOppositeConfiguration;
-
+    std::vector<int> configArray{std::vector<int>(ALPHA_LENGTH,
+        VECTOR_INITIALIZE)};
 };
+
