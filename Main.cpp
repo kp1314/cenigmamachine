@@ -47,9 +47,7 @@ int main(int argc, char **argv)
     int rotationsOfFirstRotor = 0;
     string keysPressed; 
 
-    while (!cin.eof()) {
-
-    cin >> ws >> keysPressed;     
+    while (cin >> ws >> keysPressed) {     
 
     for (char& c : keysPressed) {
       
