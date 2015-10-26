@@ -1,8 +1,7 @@
 #include <stdexcept> 
-#include <iostream>
+//#include <iostream>
 #include <string>
-#include <vector>
-#include "Encoder.hpp"
+//#include <vector>
 #include "Rotor.hpp"
 
 Rotor::Rotor(std::ifstream& configFile) {

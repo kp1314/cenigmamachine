@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
-#include "Encoder.hpp"
 #include "Plugboard.hpp"
 
 Plugboard::Plugboard(std::ifstream& configFile) {

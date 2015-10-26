@@ -1,5 +1,5 @@
-#include <iostream>
-#include <fstream>
+#ifndef ROTOR
+#define ROTOR
 #include "Encoder.hpp"
 
 class Rotor { 
@@ -16,4 +16,4 @@ class Rotor {
     std::vector<int> configArray{std::vector<int>(ALPHA_LENGTH,
         VECTOR_INITIALIZE)};
 };
-
+#endif

@@ -1,12 +1,6 @@
 // skeleton C++ file, you will need to edit this and other files to implement your enigma machine
 #include <memory>
 #include <stdexcept>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
 #include <math.h>
 #include "Encoder.hpp"
 #include "Reflector.hpp"

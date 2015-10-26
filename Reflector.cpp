@@ -1,4 +1,3 @@
-#include "Encoder.hpp"
 #include "Reflector.hpp"
 
 void Reflector::encode(char& keyPressed) {

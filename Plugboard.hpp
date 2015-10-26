@@ -1,8 +1,7 @@
 #ifndef PLUGBOARD
 #define PLUGBOARD
 
-#include <iostream>
-#include <fstream>
+#include "Encoder.hpp"
 
 class Plugboard {
 
